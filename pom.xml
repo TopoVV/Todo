@@ -19,6 +19,7 @@
         <lombok.version>1.18.12</lombok.version>
         <h2.version>1.4.200</h2.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencies>
@@ -46,6 +47,12 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.postgresql</groupId>
