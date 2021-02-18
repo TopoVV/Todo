@@ -7,6 +7,7 @@ import com.topov.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,4 +35,5 @@ public class AuthenticationServiceImpl {
         final String tokenValue = this.jsonTokenService.createAuthenticationToken(user);
         return new Authentication("Welcome, " + user.getUsername(), tokenValue);
     }
+
 }

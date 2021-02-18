@@ -1,13 +1,13 @@
 package com.topov.todo.service;
 
 import com.topov.todo.model.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class JsonTokenServiceImpl implements JsonTokenService {
@@ -15,11 +15,8 @@ public class JsonTokenServiceImpl implements JsonTokenService {
 
     private final Calendar calendar = Calendar.getInstance();
 
+    @Value("${jwt.secret}")
     private String secret;
-
-    public JsonTokenServiceImpl(@Value("${jwt.secret}") String secret) {
-        this.secret = secret;
-    }
 
     @Override
     public String createAuthenticationToken(User user) {
@@ -32,5 +29,12 @@ public class JsonTokenServiceImpl implements JsonTokenService {
             .signWith(SignatureAlgorithm.HS256, secret)
             .compact();
 
+    }
+
+    @Override
+    public void verifyToken(String token) {
+        Jwts.parser()
+            .setSigningKey(secret)
+            .parseClaimsJws(token);
     }
 }
