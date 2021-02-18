@@ -16,6 +16,9 @@
     <description>Todo Application Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
+        <lombok.version>1.18.12</lombok.version>
+        <h2.version>1.4.200</h2.version>
+        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
     </properties>
 
     <dependencies>
@@ -31,12 +34,17 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.200</version>
+            <version>${h2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
         </dependency>
 
         <dependency>
