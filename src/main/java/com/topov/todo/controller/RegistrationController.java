@@ -21,12 +21,10 @@ public class RegistrationController {
     private static final Logger log = LogManager.getLogger(RegistrationController.class);
 
     private RegistrationService registrationService;
-    private BindingResultConverter bindingResultConverter;
 
     @Autowired
-    public RegistrationController(RegistrationService registrationService, BindingResultConverter bindingResultConverter) {
+    public RegistrationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
-        this.bindingResultConverter = bindingResultConverter;
     }
 
     @PostMapping(
@@ -34,15 +32,8 @@ public class RegistrationController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Map<String, Object> registrationPost(@RequestBody @Valid RegistrationData registrationData, BindingResult bindingResult) {
+    public Map<String, Object> registrationPost(@RequestBody @Valid RegistrationData registrationData) {
         final HashMap<String, Object> response = new HashMap<>();
-
-        if (bindingResult.hasErrors()) {
-            response.put("result", "fail");
-            response.put("message", "Invalid input");
-            response.put("errors", this.bindingResultConverter.convertBindingResult(bindingResult));
-            return response;
-        }
 
         try {
             if (this.registrationService.registerUser(registrationData)) {

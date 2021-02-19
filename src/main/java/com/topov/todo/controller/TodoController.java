@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -50,31 +51,13 @@ public class TodoController {
     }
 
     @PostMapping("/todos")
-    public Map<String, Object> todoPost(@RequestBody TodoData createTodoData, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            final HashMap<String, Object> response = new HashMap<>();
-            response.put("result", "fail");
-            response.put("message", "Invalid input");
-            response.put("errors", this.bindingResultConverter.convertBindingResult(bindingResult));
-            return response;
-        }
-
+    public Map<String, Object> todoPost(@RequestBody @Valid TodoData createTodoData) {
         this.todoService.createTodo(createTodoData);
         return Collections.singletonMap("result", "success");
     }
 
     @PutMapping("/todos/{todoId}")
-    public Map<String, Object> todoPut(@RequestBody TodoData updateTodoData, BindingResult bindingResult, @PathVariable Long todoId) {
-
-        if (bindingResult.hasErrors()) {
-            final HashMap<String, Object> response = new HashMap<>();
-            response.put("result", "fail");
-            response.put("message", "Invalid input");
-            response.put("errors", this.bindingResultConverter.convertBindingResult(bindingResult));
-            return response;
-        }
-
+    public Map<String, Object> todoPut(@RequestBody @Valid TodoData updateTodoData, @PathVariable Long todoId) {
         this.todoService.updateTodo(todoId, updateTodoData);
         return Collections.singletonMap("result", "success");
     }

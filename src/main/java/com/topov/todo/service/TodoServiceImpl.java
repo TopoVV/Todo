@@ -93,6 +93,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public void deleteTodo(Long id) {
         final Principal principal = this.authenticationService.getCurrentUser();
 

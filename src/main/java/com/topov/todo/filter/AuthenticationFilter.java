@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,22 +38,15 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        final BufferedReader reader = req.getReader();
-        final String body = reader
-            .lines()
-            .collect(joining(System.lineSeparator()));
-        reader.close();
+        final String token = ((HttpServletRequest) req).getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (body.isEmpty()) {
+        if (token == null || token.isEmpty()) {
             ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.getWriter().write(buildUnauthorizedResponse());
             return;
         }
 
-        final AuthenticationParameters params = this.mapper.readValue(body, AuthenticationParameters.class);
-        final Optional<String> tokenOptional = params.getToken();
-
-        if (!tokenOptional.isPresent() || !this.authenticationService.authenticateWithToken(tokenOptional.get())) {
+        if (!this.authenticationService.authenticateWithToken(token)) {
             ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.getWriter().write(buildUnauthorizedResponse());
         }
@@ -64,18 +59,5 @@ public class AuthenticationFilter implements Filter {
         response.put("result", "fail");
         response.put("message", "Please login!");
         return this.mapper.writeValueAsString(response);
-    }
-
-    @Setter
-    @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private static final class AuthenticationParameters {
-        @JsonInclude(JsonInclude.Include.USE_DEFAULTS)
-        private String token;
-
-        public Optional<String> getToken() {
-            return Optional.ofNullable(token);
-        }
     }
 }

@@ -19,13 +19,10 @@ import java.util.Optional;
 
 @RestController
 public class AuthenticationController {
-
-    private BindingResultConverter bindingResultConverter;
     private AuthenticationService authenticationService;
 
     @Autowired
-    public AuthenticationController(BindingResultConverter bindingResultConverter, AuthenticationService authenticationService) {
-        this.bindingResultConverter = bindingResultConverter;
+    public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
@@ -34,15 +31,8 @@ public class AuthenticationController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Map<String, Object> authenticationPost(@RequestBody @Valid AuthenticationData authenticationData, BindingResult bindingResult) {
+    public Map<String, Object> authenticationPost(@RequestBody @Valid AuthenticationData authenticationData) {
         final HashMap<String, Object> response = new HashMap<>();
-        if (bindingResult.hasErrors()) {
-            response.put("result", "fail");
-            response.put("message", "Invalid input");
-            response.put("errors", this.bindingResultConverter.convertBindingResult(bindingResult));
-            return response;
-
-        }
 
         final Authentication authentication = authenticationService.authenticateUser(authenticationData);
         response.put("message", authentication.getMessage());

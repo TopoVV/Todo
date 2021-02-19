@@ -1,6 +1,7 @@
 package com.topov.todo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.topov.todo.controller.advice.InvalidInputControllerAdvice;
 import com.topov.todo.converter.BindingResultConverter;
 import com.topov.todo.dto.RegistrationData;
 import com.topov.todo.service.RegistrationService;
@@ -92,6 +93,7 @@ class RegistrationControllerTest {
             .andDo(print())
             .andExpect(jsonPath("$.result", is("fail")));
     }
+
 
     @Test
     public void registrationPost_MultipleInputErrors() throws Exception {
