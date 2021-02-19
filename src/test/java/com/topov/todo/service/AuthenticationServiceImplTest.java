@@ -48,7 +48,6 @@ class AuthenticationServiceImplTest {
 
         final AuthenticationService service = new AuthenticationServiceImpl(mockUserRepository, mockEncoder, mockTokenService);
         final Authentication authentication = service.authenticateUser(new AuthenticationData("username", "Wrong password"));
-        assertFalse(authentication.isSuccessful());
         assertFalse(authentication.getTokenValue().isPresent());
     }
 
@@ -64,7 +63,6 @@ class AuthenticationServiceImplTest {
 
         final AuthenticationService service = new AuthenticationServiceImpl(mockUserRepository, mockEncoder, mockTokenService);
         final Authentication authentication = service.authenticateUser(new AuthenticationData("username", "Password"));
-        assertFalse(authentication.isSuccessful());
         assertFalse(authentication.getTokenValue().isPresent());
     }
 
@@ -84,7 +82,6 @@ class AuthenticationServiceImplTest {
 
         final AuthenticationService service = new AuthenticationServiceImpl(mockUserRepository, mockEncoder, mockTokenService);
         final Authentication authentication = service.authenticateUser(new AuthenticationData("username", "Password"));
-        assertTrue(authentication.isSuccessful());
         assertTrue(authentication.getTokenValue().isPresent());
     }
 

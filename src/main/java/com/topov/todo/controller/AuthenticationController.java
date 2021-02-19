@@ -1,6 +1,7 @@
 package com.topov.todo.controller;
 
 import com.topov.todo.converter.BindingResultConverter;
+import com.topov.todo.dto.Authentication;
 import com.topov.todo.dto.AuthenticationData;
 import com.topov.todo.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class AuthenticationController {
@@ -22,8 +24,9 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @Autowired
-    public AuthenticationController(BindingResultConverter bindingResultConverter) {
+    public AuthenticationController(BindingResultConverter bindingResultConverter, AuthenticationService authenticationService) {
         this.bindingResultConverter = bindingResultConverter;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping(
@@ -41,6 +44,15 @@ public class AuthenticationController {
 
         }
 
-        return Collections.singletonMap("result", "success");
+        final Authentication authentication = authenticationService.authenticateUser(authenticationData);
+        response.put("message", authentication.getMessage());
+
+        final Optional<String> tokenOptional = authentication.getTokenValue();
+        if (tokenOptional.isPresent()) {
+            response.put("result", "success");
+            response.put("token", tokenOptional.get());
+        }
+
+        return response;
     }
 }

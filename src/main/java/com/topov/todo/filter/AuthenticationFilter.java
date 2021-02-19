@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +36,11 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        final String body = req.getReader()
+        final BufferedReader reader = req.getReader();
+        final String body = reader
             .lines()
             .collect(joining(System.lineSeparator()));
+        reader.close();
 
         if (body.isEmpty()) {
             ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
