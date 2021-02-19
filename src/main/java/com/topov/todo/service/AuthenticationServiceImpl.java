@@ -8,7 +8,9 @@ import com.topov.todo.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -60,8 +62,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Optional<Principal> getCurrentUser() {
-        return Optional.ofNullable(currentUser.get());
+    public Principal getCurrentUser() {
+        return Optional.ofNullable(currentUser.get())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
 

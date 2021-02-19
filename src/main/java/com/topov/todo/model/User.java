@@ -1,6 +1,7 @@
 package com.topov.todo.model;
 
-import com.topov.todo.controller.Todo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.topov.todo.dto.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,9 @@ public class User {
     @GeneratedValue(generator = "user_seq_generator", strategy = GenerationType.SEQUENCE)
     private Long id;
     private String username;
+    @JsonIgnore
     private String password;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "owner")
     private List<Todo> todos;
 

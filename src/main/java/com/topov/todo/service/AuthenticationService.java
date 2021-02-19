@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface AuthenticationService {
     Authentication authenticateUser(AuthenticationData authenticationData);
     boolean authenticateWithToken(String token);
-    Optional<Principal> getCurrentUser();
+    Principal getCurrentUser();
 }

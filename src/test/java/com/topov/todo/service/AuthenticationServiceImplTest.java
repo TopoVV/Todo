@@ -114,21 +114,21 @@ class AuthenticationServiceImplTest {
             .getTokenValue()
             .get();
 
-        final Callable<Optional<Principal>> thread1 = () ->  {
-            authService.authenticateWithToken(token1.replace('I', 'q'));
+        final Callable<Principal> thread1 = () ->  {
+            authService.authenticateWithToken(token1);
             return authService.getCurrentUser();
         };
-        final Callable<Optional<Principal>> thread2 = () -> {
+        final Callable<Principal> thread2 = () -> {
             authService.authenticateWithToken(token2);
             return authService.getCurrentUser();
         };
 
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
-        final Future<Optional<Principal>> submit1 = executorService.submit(thread1);
-//        final Future<Optional<Principal>> submit2 = executorService.submit(thread2);
+        final Future<Principal> submit1 = executorService.submit(thread1);
+        final Future<Principal> submit2 = executorService.submit(thread2);
 
         submit1.get();
-//        submit2.get();
+        submit2.get();
     }
 
     @TestConfiguration

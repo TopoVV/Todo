@@ -1,6 +1,8 @@
-package com.topov.todo.controller;
+package com.topov.todo.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.topov.todo.model.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "todos")
 @SequenceGenerator(name = "todo_seq_gen", sequenceName = "todo_id_seq", allocationSize = 1)
@@ -20,6 +23,7 @@ public class Todo {
     private String text;
     private Boolean isDone;
 
+    @JsonIgnore
     @ManyToOne(optional = false)
     private User owner;
 
