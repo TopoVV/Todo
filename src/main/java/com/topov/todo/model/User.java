@@ -21,6 +21,7 @@ public class User {
     @Id
     @GeneratedValue(generator = "user_seq_generator", strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(unique = true)
     private String username;
     @JsonIgnore
     private String password;
