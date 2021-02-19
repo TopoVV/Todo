@@ -15,7 +15,7 @@ public class SecurityConfig {
     public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(AuthenticationService authenticationService) {
         final FilterRegistrationBean<AuthenticationFilter> filterRegistration = new FilterRegistrationBean<>();
         filterRegistration.setFilter(new AuthenticationFilter(authenticationService));
-        filterRegistration.addUrlPatterns("/todos");
+        filterRegistration.addUrlPatterns("/todos/*");
 
         return filterRegistration;
     }
