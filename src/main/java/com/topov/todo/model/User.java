@@ -1,11 +1,13 @@
 package com.topov.todo.model;
 
+import com.topov.todo.controller.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,9 +23,16 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "owner")
+    private List<Todo> todos;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public void addTodo(Todo todo) {
+        todo.setOwner(this);
+        this.todos.add(todo);
     }
 }

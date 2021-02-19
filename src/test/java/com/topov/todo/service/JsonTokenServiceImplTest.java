@@ -6,11 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -66,19 +63,19 @@ class JsonTokenServiceImplTest {
     @Test
     public void whenSignatureNotValid_ThenSignatureException() {
         final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTM2ODI0MjUsInN1YiI6Im15bmFtZSIsImV4cCI6MTYxMzY4MzAyM30.N8lJuySqcBKhsMJ8pnNS27Dkqk5kFsRV-qqWqqXpnsY";
-        assertThrows(SignatureException.class, () -> tokenService.verifyToken(token));
+        assertThrows(SignatureException.class, () -> tokenService.parseClaims(token));
     }
 
     @Test
     public void whenContentNotValid_ThenSignatureException() {
         final String token = "eyJhbGciOiJIUzI1NiJ9.eyJssXQiOjE2MTM2OTAwNjcsInN1YiI6Im15bmFtZSIsImV4cCI6MTYxMzY5MDY2NH0.ZxJLu2h2wRM9kUQtVInFp7pbvNi2rpdc9GdNyi1JUtw";
-        assertThrows(SignatureException.class, () -> tokenService.verifyToken(token));
+        assertThrows(SignatureException.class, () -> tokenService.parseClaims(token));
     }
 
     @Test
     public void whenHeaderNotValid_ThenSignatureException() {
         final String token = "eyJskGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTM2OTAwNjcsInN1YiI6Im15bmFtZSIsImV4cCI6MTYxMzY5MDY2NH0.ZxJLu2h2wRM9kUQtVInFp7pbvNi2rpdc9GdNyi1JUtw";
-        assertThrows(MalformedJwtException.class, () -> tokenService.verifyToken(token));
+        assertThrows(MalformedJwtException.class, () -> tokenService.parseClaims(token));
     }
 
     @Test
@@ -96,7 +93,7 @@ class JsonTokenServiceImplTest {
         );
 
         final String token = mockTokenService.createAuthenticationToken(mock(User.class));
-        assertThrows(ExpiredJwtException.class, () -> tokenService.verifyToken(token));
+        assertThrows(ExpiredJwtException.class, () -> tokenService.parseClaims(token));
     }
 
     @TestConfiguration

@@ -1,14 +1,16 @@
 package com.topov.todo.service;
 
+import com.sun.security.auth.UserPrincipal;
 import com.topov.todo.dto.AuthenticationData;
 import com.topov.todo.dto.Authentication;
 import com.topov.todo.model.User;
 import com.topov.todo.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -16,6 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private JsonTokenService jsonTokenService;
+    
+    private static ThreadLocal<Principal> currentUser = ThreadLocal.withInitial(() -> null);
 
     @Autowired
     public AuthenticationServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JsonTokenService jsonTokenService) {
@@ -35,17 +39,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         final User user = userOptional.get();
         final String tokenValue = this.jsonTokenService.createAuthenticationToken(user);
-        return new Authentication("Welcome, " + user.getUsername(), tokenValue);
+        return new Authentication(tokenValue, "Welcome, " + user.getUsername());
     }
 
     @Override
-    public boolean isAuthenticated(String token) {
+    public boolean authenticateWithToken(String token) {
         try {
-            this.jsonTokenService.verifyToken(token);
-            return true;
+            final Claims claims = this.jsonTokenService.parseClaims(token);
+            final Optional<User> userOptional = this.userRepository.findByUsername(claims.getSubject());
+
+            if (userOptional.isPresent()) {
+                currentUser.set(new UserPrincipal(claims.getSubject()));
+                return true;
+            }
+
+            return false;
         } catch (JwtException e) {
             return false;
         }
     }
+
+    @Override
+    public Optional<Principal> getCurrentUser() {
+        return Optional.ofNullable(currentUser.get());
+    }
+
 
 }

@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface JsonTokenService {
     String createAuthenticationToken(User user);
-    void verifyToken(String token);
+    Claims parseClaims(String token);
 }

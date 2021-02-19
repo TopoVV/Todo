@@ -2,14 +2,12 @@ package com.topov.todo.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.topov.todo.filter.AuthenticationFilter;
-import com.topov.todo.repository.UserRepository;
 import com.topov.todo.service.AuthenticationService;
 import com.topov.todo.service.AuthenticationServiceImpl;
 import com.topov.todo.service.JsonTokenService;
 import com.topov.todo.service.JsonTokenServiceImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -17,14 +15,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +29,6 @@ import java.util.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -74,7 +68,7 @@ public class SecurityTest {
     @Test
     public void whenTokenOk_ThenOk() throws Exception {
         final AuthenticationService mockAuthenticationService = Mockito.mock(AuthenticationService.class);
-        Mockito.when(mockAuthenticationService.isAuthenticated(ArgumentMatchers.anyString())).thenReturn(true);
+        Mockito.when(mockAuthenticationService.authenticateWithToken(ArgumentMatchers.anyString())).thenReturn(true);
 
         MockMvc mvc = MockMvcBuilders
             .standaloneSetup(new SecurityTestController())

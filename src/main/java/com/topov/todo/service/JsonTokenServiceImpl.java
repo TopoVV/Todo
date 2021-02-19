@@ -32,9 +32,10 @@ public class JsonTokenServiceImpl implements JsonTokenService {
     }
 
     @Override
-    public void verifyToken(String token) {
-        Jwts.parser()
+    public Claims parseClaims(String token) {
+        return Jwts.parser()
             .setSigningKey(secret)
-            .parseClaimsJws(token);
+            .parseClaimsJws(token)
+            .getBody();
     }
 }

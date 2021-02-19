@@ -4,20 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.topov.todo.service.AuthenticationService;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
@@ -41,7 +34,7 @@ public class AuthenticationFilter implements Filter {
         final AuthenticationParameters params = this.mapper.readValue(body, AuthenticationParameters.class);
         final Optional<String> tokenOptional = params.getToken();
 
-        if (!tokenOptional.isPresent() || !this.authenticationService.isAuthenticated(tokenOptional.get())) {
+        if (!tokenOptional.isPresent() || !this.authenticationService.authenticateWithToken(tokenOptional.get())) {
             final HashMap<String, String> response = new HashMap<>();
             response.put("result", "fail");
             response.put("message", "Please login!");
