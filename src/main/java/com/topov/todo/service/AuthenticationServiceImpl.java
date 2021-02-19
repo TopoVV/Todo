@@ -4,6 +4,7 @@ import com.topov.todo.dto.AuthenticationData;
 import com.topov.todo.dto.Authentication;
 import com.topov.todo.model.User;
 import com.topov.todo.repository.UserRepository;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AuthenticationServiceImpl {
+public class AuthenticationServiceImpl implements AuthenticationService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private JsonTokenService jsonTokenService;
@@ -23,6 +24,7 @@ public class AuthenticationServiceImpl {
         this.jsonTokenService = jsonTokenService;
     }
 
+    @Override
     public Authentication authenticateUser(AuthenticationData authenticationData) {
         final Optional<User> userOptional = this.userRepository.findByUsername(authenticationData.getUsername());
         final String encodedPassword = this.passwordEncoder.encodePassword(authenticationData.getPassword());
@@ -34,6 +36,16 @@ public class AuthenticationServiceImpl {
         final User user = userOptional.get();
         final String tokenValue = this.jsonTokenService.createAuthenticationToken(user);
         return new Authentication("Welcome, " + user.getUsername(), tokenValue);
+    }
+
+    @Override
+    public boolean isAuthenticated(String token) {
+        try {
+            this.jsonTokenService.verifyToken(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 
 }

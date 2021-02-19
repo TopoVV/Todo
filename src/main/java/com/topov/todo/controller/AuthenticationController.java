@@ -2,7 +2,7 @@ package com.topov.todo.controller;
 
 import com.topov.todo.converter.BindingResultConverter;
 import com.topov.todo.dto.AuthenticationData;
-import com.topov.todo.service.AuthenticationServiceImpl;
+import com.topov.todo.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class AuthenticationController {
 
     private BindingResultConverter bindingResultConverter;
-    private AuthenticationServiceImpl authenticationServiceImpl;
+    private AuthenticationService authenticationService;
 
     @Autowired
     public AuthenticationController(BindingResultConverter bindingResultConverter) {
