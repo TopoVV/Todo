@@ -1,4 +1,4 @@
-package com.topov.todo.dto;
+package com.topov.todo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.topov.todo.model.User;

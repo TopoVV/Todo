@@ -1,7 +1,6 @@
 package com.topov.todo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.topov.todo.dto.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.topov.todo.service;
 
-import com.topov.todo.dto.RegistrationData;
+import com.topov.todo.dto.request.RegistrationData;
 import com.topov.todo.model.User;
 import com.topov.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

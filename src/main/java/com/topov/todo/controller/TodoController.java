@@ -1,12 +1,10 @@
 package com.topov.todo.controller;
 
-import com.topov.todo.converter.BindingResultConverter;
-import com.topov.todo.dto.Todo;
-import com.topov.todo.dto.TodoData;
-import com.topov.todo.dto.TodoDto;
+import com.topov.todo.model.Todo;
+import com.topov.todo.dto.request.TodoData;
+import com.topov.todo.dto.response.TodoDto;
 import com.topov.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,12 +17,10 @@ import java.util.stream.Collectors;
 @RestController
 public class TodoController {
     private TodoService todoService;
-    private BindingResultConverter bindingResultConverter;
 
     @Autowired
-    public TodoController(TodoService todoService, BindingResultConverter bindingResultConverter) {
+    public TodoController(TodoService todoService) {
         this.todoService = todoService;
-        this.bindingResultConverter = bindingResultConverter;
     }
 
     @GetMapping("/todos/{todoId}")

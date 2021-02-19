@@ -1,4 +1,4 @@
-package com.topov.todo.dto;
+package com.topov.todo.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

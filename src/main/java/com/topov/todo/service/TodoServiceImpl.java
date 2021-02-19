@@ -1,7 +1,7 @@
 package com.topov.todo.service;
 
-import com.topov.todo.dto.Todo;
-import com.topov.todo.dto.TodoData;
+import com.topov.todo.model.Todo;
+import com.topov.todo.dto.request.TodoData;
 import com.topov.todo.model.User;
 import com.topov.todo.repository.TodoRepository;
 import com.topov.todo.repository.UserRepository;

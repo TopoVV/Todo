@@ -1,17 +1,12 @@
 package com.topov.todo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.topov.todo.controller.advice.InvalidInputControllerAdvice;
-import com.topov.todo.converter.BindingResultConverter;
-import com.topov.todo.dto.RegistrationData;
+import com.topov.todo.dto.request.RegistrationData;
 import com.topov.todo.service.RegistrationService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +25,7 @@ class RegistrationControllerTest {
         when(registrationService.registerUser(any())).thenReturn(true);
 
         MockMvc mvc = MockMvcBuilders
-            .standaloneSetup(new RegistrationController(registrationService, new BindingResultConverter()))
+            .standaloneSetup(new RegistrationController(registrationService))
             .build();
 
         final RegistrationData object = new RegistrationData("username", "password");
@@ -48,7 +43,7 @@ class RegistrationControllerTest {
         when(registrationService.registerUser(any())).thenReturn(false);
 
         MockMvc mvc = MockMvcBuilders
-            .standaloneSetup(new RegistrationController(registrationService, new BindingResultConverter()))
+            .standaloneSetup(new RegistrationController(registrationService))
             .build();
 
         final RegistrationData object = new RegistrationData("username", "password");
@@ -66,7 +61,7 @@ class RegistrationControllerTest {
         when(registrationService.registerUser(any())).thenThrow(RuntimeException.class);
 
         MockMvc mvc = MockMvcBuilders
-            .standaloneSetup(new RegistrationController(registrationService, new BindingResultConverter()))
+            .standaloneSetup(new RegistrationController(registrationService))
             .build();
 
         final RegistrationData object = new RegistrationData("username", "password");
@@ -82,7 +77,7 @@ class RegistrationControllerTest {
     public void registrationPost_EmptyUsername() throws Exception {
         final RegistrationService registrationService = mock(RegistrationService.class);
         MockMvc mvc = MockMvcBuilders
-            .standaloneSetup(new RegistrationController(registrationService, new BindingResultConverter()))
+            .standaloneSetup(new RegistrationController(registrationService))
             .build();
 
         final RegistrationData object = new RegistrationData("", "password");
@@ -100,7 +95,7 @@ class RegistrationControllerTest {
         final RegistrationService registrationService = mock(RegistrationService.class);
 
         MockMvc mvc = MockMvcBuilders
-            .standaloneSetup(new RegistrationController(registrationService, new BindingResultConverter()))
+            .standaloneSetup(new RegistrationController(registrationService))
             .build();
 
         final RegistrationData object = new RegistrationData("", "");

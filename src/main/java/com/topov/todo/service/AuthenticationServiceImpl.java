@@ -1,7 +1,7 @@
 package com.topov.todo.service;
 
 import com.sun.security.auth.UserPrincipal;
-import com.topov.todo.dto.AuthenticationData;
+import com.topov.todo.dto.request.AuthenticationData;
 import com.topov.todo.dto.Authentication;
 import com.topov.todo.model.User;
 import com.topov.todo.repository.UserRepository;

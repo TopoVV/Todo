@@ -1,7 +1,6 @@
 package com.topov.todo.controller;
 
-import com.topov.todo.converter.BindingResultConverter;
-import com.topov.todo.dto.Todo;
+import com.topov.todo.model.Todo;
 import com.topov.todo.model.User;
 import com.topov.todo.service.TodoService;
 import org.assertj.core.util.Lists;
@@ -33,7 +32,7 @@ class TodoControllerTest {
         final TodoService mockTodoService = mock(TodoService.class);
         when(mockTodoService.getAllTodos()).thenReturn(todos);
 
-        final MockMvc mvc = MockMvcBuilders.standaloneSetup(new TodoController(mockTodoService, new BindingResultConverter()))
+        final MockMvc mvc = MockMvcBuilders.standaloneSetup(new TodoController(mockTodoService))
             .build();
 
         mvc.perform(get("/todos"))
@@ -48,7 +47,7 @@ class TodoControllerTest {
         final TodoService mockTodoService = mock(TodoService.class);
         when(mockTodoService.getTodo(anyLong())).thenReturn(todo);
 
-        final MockMvc mvc = MockMvcBuilders.standaloneSetup(new TodoController(mockTodoService, new BindingResultConverter()))
+        final MockMvc mvc = MockMvcBuilders.standaloneSetup(new TodoController(mockTodoService))
             .build();
 
         mvc.perform(get("/todos/1"))

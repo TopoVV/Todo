@@ -1,18 +1,15 @@
 package com.topov.todo.controller;
 
-import com.topov.todo.converter.BindingResultConverter;
 import com.topov.todo.dto.Authentication;
-import com.topov.todo.dto.AuthenticationData;
+import com.topov.todo.dto.request.AuthenticationData;
 import com.topov.todo.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

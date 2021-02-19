@@ -1,11 +1,9 @@
 package com.topov.todo.service;
 
 import com.topov.todo.dto.Authentication;
-import com.topov.todo.dto.AuthenticationData;
-import com.topov.todo.model.User;
+import com.topov.todo.dto.request.AuthenticationData;
 
 import java.security.Principal;
-import java.util.Optional;
 
 public interface AuthenticationService {
     Authentication authenticateUser(AuthenticationData authenticationData);

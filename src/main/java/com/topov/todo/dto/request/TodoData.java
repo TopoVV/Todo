@@ -1,4 +1,4 @@
-package com.topov.todo.dto;
+package com.topov.todo.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationData {
+public class TodoData {
     @NotEmpty
-    private String username;
-    @NotEmpty
-    private String password;
+    private String text;
 }

@@ -1,5 +1,6 @@
-package com.topov.todo.dto;
+package com.topov.todo.dto.response;
 
+import com.topov.todo.model.Todo;
 import lombok.Getter;
 import lombok.Setter;
 

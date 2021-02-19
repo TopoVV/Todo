@@ -1,7 +1,7 @@
 package com.topov.todo.service;
 
 import com.topov.todo.dto.Authentication;
-import com.topov.todo.dto.AuthenticationData;
+import com.topov.todo.dto.request.AuthenticationData;
 import com.topov.todo.model.User;
 import com.topov.todo.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.security.Principal;
