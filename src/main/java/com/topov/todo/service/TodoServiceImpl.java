@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.logging.LogManager;
 
 @Service
 public class TodoServiceImpl implements TodoService {
@@ -28,6 +29,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public Todo getTodo(Long id) {
         final Principal principal =  this.authenticationService.getCurrentUser();
 
@@ -42,6 +44,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public List<Todo> getAllTodos() {
         final Principal principal = this.authenticationService.getCurrentUser();
         final User user = this.userRepository.findByUsername(principal.getName())

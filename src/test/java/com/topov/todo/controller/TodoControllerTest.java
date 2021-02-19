@@ -1,17 +1,23 @@
 package com.topov.todo.controller;
 
+import com.topov.todo.controller.advice.InvalidInputControllerAdvice;
+import com.topov.todo.converter.BindingResultConverter;
 import com.topov.todo.model.Todo;
 import com.topov.todo.model.User;
 import com.topov.todo.service.TodoService;
+import io.jsonwebtoken.lang.Collections;
 import org.assertj.core.util.Lists;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,10 +39,12 @@ class TodoControllerTest {
         when(mockTodoService.getAllTodos()).thenReturn(todos);
 
         final MockMvc mvc = MockMvcBuilders.standaloneSetup(new TodoController(mockTodoService))
+            .setControllerAdvice(new InvalidInputControllerAdvice(new BindingResultConverter()))
             .build();
 
         mvc.perform(get("/todos"))
-            .andDo(print());
+            .andDo(print())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.todos", Matchers.hasSize(5)));
 
     }
 
@@ -48,9 +56,11 @@ class TodoControllerTest {
         when(mockTodoService.getTodo(anyLong())).thenReturn(todo);
 
         final MockMvc mvc = MockMvcBuilders.standaloneSetup(new TodoController(mockTodoService))
+            .setControllerAdvice(new InvalidInputControllerAdvice(new BindingResultConverter()))
             .build();
 
         mvc.perform(get("/todos/1"))
-            .andDo(print());
+            .andDo(print())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.value", Matchers.notNullValue()));
     }
 }

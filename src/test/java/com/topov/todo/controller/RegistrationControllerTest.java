@@ -1,6 +1,8 @@
 package com.topov.todo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.topov.todo.controller.advice.InvalidInputControllerAdvice;
+import com.topov.todo.converter.BindingResultConverter;
 import com.topov.todo.dto.request.RegistrationData;
 import com.topov.todo.service.RegistrationService;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,7 @@ class RegistrationControllerTest {
 
         MockMvc mvc = MockMvcBuilders
             .standaloneSetup(new RegistrationController(registrationService))
+            .setControllerAdvice(new InvalidInputControllerAdvice(new BindingResultConverter()))
             .build();
 
         final RegistrationData object = new RegistrationData("username", "password");
@@ -44,6 +47,7 @@ class RegistrationControllerTest {
 
         MockMvc mvc = MockMvcBuilders
             .standaloneSetup(new RegistrationController(registrationService))
+            .setControllerAdvice(new InvalidInputControllerAdvice(new BindingResultConverter()))
             .build();
 
         final RegistrationData object = new RegistrationData("username", "password");
@@ -62,6 +66,7 @@ class RegistrationControllerTest {
 
         MockMvc mvc = MockMvcBuilders
             .standaloneSetup(new RegistrationController(registrationService))
+            .setControllerAdvice(new InvalidInputControllerAdvice(new BindingResultConverter()))
             .build();
 
         final RegistrationData object = new RegistrationData("username", "password");
@@ -78,6 +83,7 @@ class RegistrationControllerTest {
         final RegistrationService registrationService = mock(RegistrationService.class);
         MockMvc mvc = MockMvcBuilders
             .standaloneSetup(new RegistrationController(registrationService))
+            .setControllerAdvice(new InvalidInputControllerAdvice(new BindingResultConverter()))
             .build();
 
         final RegistrationData object = new RegistrationData("", "password");
@@ -85,8 +91,7 @@ class RegistrationControllerTest {
         mvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
-            .andDo(print())
-            .andExpect(jsonPath("$.result", is("fail")));
+            .andDo(print());
     }
 
 
@@ -96,6 +101,7 @@ class RegistrationControllerTest {
 
         MockMvc mvc = MockMvcBuilders
             .standaloneSetup(new RegistrationController(registrationService))
+            .setControllerAdvice(new InvalidInputControllerAdvice(new BindingResultConverter()))
             .build();
 
         final RegistrationData object = new RegistrationData("", "");

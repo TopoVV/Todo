@@ -5,6 +5,7 @@ import com.topov.todo.dto.request.TodoData;
 import com.topov.todo.dto.response.TodoDto;
 import com.topov.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,7 +24,10 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/todos/{todoId}")
+    @GetMapping(
+        value = "/todos/{todoId}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Map<String, Object> todoGet(@PathVariable Long todoId) {
         final Todo todo = this.todoService.getTodo(todoId);
         final HashMap<String, Object> response = new HashMap<>();
@@ -32,7 +36,10 @@ public class TodoController {
         return response;
     }
 
-    @GetMapping("/todos")
+    @GetMapping(
+        value = "/todos",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Map<String, Object> todoGetAll() {
         final List<TodoDto> allTodos = this.todoService.getAllTodos()
             .stream()
@@ -46,25 +53,39 @@ public class TodoController {
         return response;
     }
 
-    @PostMapping("/todos")
+    @PostMapping(
+        value = "/todos",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Map<String, Object> todoPost(@RequestBody @Valid TodoData createTodoData) {
         this.todoService.createTodo(createTodoData);
         return Collections.singletonMap("result", "success");
     }
 
-    @PutMapping("/todos/{todoId}")
+    @PutMapping(
+        value = "/todos/{todoId}",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Map<String, Object> todoPut(@RequestBody @Valid TodoData updateTodoData, @PathVariable Long todoId) {
         this.todoService.updateTodo(todoId, updateTodoData);
         return Collections.singletonMap("result", "success");
     }
 
-    @PutMapping("/todos/{todoId}/finish")
+    @PutMapping(
+        value = "/todos/{todoId}/finish",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Map<String, Object> todoPutFinish(@PathVariable Long todoId) {
         this.todoService.finishTodo(todoId);
         return Collections.singletonMap("result", "success");
     }
 
-    @DeleteMapping("/todos/{todoId}")
+    @DeleteMapping(
+        value = "/todos/{todoId}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Map<String, Object> todoDelete(@PathVariable Long todoId) {
         this.todoService.deleteTodo(todoId);
         return Collections.singletonMap("result", "success");

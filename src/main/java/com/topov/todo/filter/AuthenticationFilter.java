@@ -38,6 +38,7 @@ public class AuthenticationFilter implements Filter {
         if (!this.authenticationService.authenticateWithToken(token)) {
             ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.getWriter().write(unauthorizedResponse());
+            return;
         }
 
         filterChain.doFilter(req, res);

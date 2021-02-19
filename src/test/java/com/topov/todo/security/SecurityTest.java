@@ -66,7 +66,7 @@ public class SecurityTest {
     }
 
     @Test
-    public void whenTokenOk_ThenOk() throws Exception {
+    public void whenTokenOk_ThenSuccess() throws Exception {
         final AuthenticationService mockAuthenticationService = Mockito.mock(AuthenticationService.class);
         Mockito.when(mockAuthenticationService.authenticateWithToken(ArgumentMatchers.anyString())).thenReturn(true);
 
@@ -75,20 +75,16 @@ public class SecurityTest {
             .addFilter(new AuthenticationFilter(mockAuthenticationService), "/secured")
             .build();
 
-        final HashMap<String, String> body = new HashMap<>();
-        body.put("token", "my-token");
 
 
-        mvc.perform(get("/secured")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(body)))
+        mvc.perform(get("/secured").header("Authorization", "token"))
             .andDo(print())
             .andExpect(jsonPath("$.result", is("secured")));
     }
 
 
     @Test
-    public void dowork() throws Exception {
+    public void whenTokenExpired_ThenFail() throws Exception {
         Calendar cal = Calendar.getInstance();
 
         final String token = Jwts.builder()
